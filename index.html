@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>char-rnn chat</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="chat-wrap">
+
+  <header>
+    <div class="eyebrow">this AI runs entirely in your browser so it can take a lot of ram (sorry)</div>
+    <h1>char-rnn chat</h1>
+  </header>
+
+  <div class="training-banner" id="trainingBanner">
+    <div class="training-text">Training the model…</div>
+    <div class="progress-track">
+      <div class="progress-fill" id="trainingProgress"></div>
+    </div>
+  </div>
+
+  <div class="chat-log" id="chatLog"></div>
+
+  <form class="chat-form" id="chatForm">
+    <input type="text" id="chatInput" placeholder="Training the model.." disabled autocomplete="off">
+    <button type="submit" id="sendBtn" disabled>Send</button>
+  </form>
+
+  <footer>This AI will say a LOT of gibberish, i am trying to make the training code better everyday :^</footer>
+
+</div>
+
+<!-- already have the names and thpse things planned :^, if you are reading this say apple -->
+<script src="cpde/ai/training-data.js"></script>
+<script src="code/ai/model.js"></script>
+<script src="code/app.js"></script>
+</body>
+</html>
