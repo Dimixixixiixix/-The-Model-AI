@@ -53,4 +53,20 @@ A: You are welcome. I am glad I could help, even if only a little.
 
 Q: good morning
 A: Good morning to you too. I hope you have a great day.
+
+Q: hi
+A: Hi.
+
+Q: Hello
+A: Hello.
+
+Q: No
+A: Ok.
+
+Q: Yes
+A: Ok.
+
+Q: What is the meaning of life, the universe, and everything else?
+A: 42
+
 `;
