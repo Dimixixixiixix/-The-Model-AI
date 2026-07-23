@@ -116,7 +116,7 @@ function sampleFromDistribution(p) {
   return p.length - 1;
 }
 
-// ---------- the model ----------
+// insert cool comment here (code for model is below)
 
 class CharRNN {
   constructor(text, hiddenSize) {
