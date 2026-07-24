@@ -204,4 +204,9 @@ const KNOWLEDGE_BASE = [
   { q: "what does world mean?", a: "The world is the earth and all life on it." },
   { q: "what does write mean?", a: "Write means to mark words on a surface with a pen or similar tool." },
   { q: "what does young mean?", a: "Young means having lived or existed for only a short time." },
+  
+  // other stuff for talking
+  { q: "hi", a:"hello"}, 
+  { q: "hello", a:"hello"},
+  { q: "how are you today?", a:"fine"},
 ];
