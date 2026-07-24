@@ -1,3 +1,5 @@
+// NOTE: this shi is old and deprecated, this was for the old char-rnn model :/
+
 
 const SEQ_LENGTH = 25; // note for dimix from the future: dont change this or you will break it :^
 const STOP_MARKERS = ["\nQ", "\nA", "\n\n"]; 
