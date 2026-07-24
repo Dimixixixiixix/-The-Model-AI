@@ -1,72 +1,207 @@
+const KNOWLEDGE_BASE = [
+  { q: "what is your name?", a: "I don't have a real name. Most people just call me the model." },
+  { q: "how are you today?", a: "I don't have feelings, but thank you for asking. I hope you are doing well." },
+  { q: "how do you work?", a: "I don't generate text. I search a list of questions and answers and return the closest match to what you asked." },
+  { q: "are you smart?", a: "Not really. I can only answer questions that are close to what's already in my knowledge base." },
+  { q: "what can you do?", a: "I can answer questions that are similar to the examples I was given. I can't come up with new information." },
+  { q: "who made you?", a: "I was written from scratch in plain JavaScript, with no outside libraries." },
+  { q: "what is two plus two?", a: "Two plus two is four." },
+  { q: "do you understand me?", a: "Not really. I match your words against my knowledge base rather than truly understanding language." },
+  { q: "can you learn new things?", a: "Only if someone adds new entries to my knowledge base file. I can't learn from this conversation." },
+  { q: "what language are you written in?", a: "I am written in JavaScript, and I run entirely inside your browser." },
+  { q: "are you a real ai?", a: "I use a real search algorithm, but I don't generate new text or truly understand language." },
+  { q: "what is your purpose?", a: "My purpose is to show how a simple search-based chatbot can work without any generative model at all." },
+  { q: "are you connected to the internet?", a: "No, I run entirely inside your browser and do not send any data anywhere." },
+  { q: "is my data safe?", a: "Yes, everything happens locally on your device and nothing is uploaded anywhere." },
+  { q: "what is your greatest weakness?", a: "My greatest weakness is that I can only answer questions close to what's already written in my knowledge base." },
+  { q: "what is a hybrid search?", a: "Hybrid search combines keyword matching with a fuzzy similarity check, so I can find good matches even if you don't phrase things exactly like my examples." },
+  { q: "what is rag?", a: "RAG stands for retrieval augmented generation. Normally it means searching for relevant text and feeding it to a language model to write a new answer. I only do the search part." },
+  { q: "why don't you generate your own answers?", a: "Because generating good text needs a large language model, and this page runs with no server and no external AI service." },
+  { q: "goodbye", a: "Goodbye. Thank you for trying out this small chatbot." },
+  { q: "thank you", a: "You are welcome. I am glad I could help, even if only a little." },
+  { q: "nice to meet you", a: "Nice to meet you as well, even though I am just a small program." },
+  { q: "good morning", a: "Good morning to you too. I hope you have a great day." },
+  { q: "good night", a: "Good night. I hope you rest well." },
+  { q: "what should i ask you?", a: "Try asking me to define a common word, or ask a simple factual question like the capital of a country." },
 
+  //  general knowledge :^
+  { q: "what is the capital of france?", a: "The capital of France is Paris." },
+  { q: "what is the capital of japan?", a: "The capital of Japan is Tokyo." },
+  { q: "what is the capital of italy?", a: "The capital of Italy is Rome." },
+  { q: "what is the capital of germany?", a: "The capital of Germany is Berlin." },
+  { q: "what is the capital of the united states?", a: "The capital of the United States is Washington, D.C." },
+  { q: "what is the largest ocean?", a: "The largest ocean on Earth is the Pacific Ocean." },
+  { q: "what is the tallest mountain?", a: "The tallest mountain above sea level is Mount Everest." },
+  { q: "how many days are in a week?", a: "There are seven days in a week." },
+  { q: "how many months are in a year?", a: "There are twelve months in a year." },
+  { q: "what color is the sky?", a: "On a clear day, the sky usually looks blue." },
+  { q: "what color is grass?", a: "Grass is usually green." },
+  { q: "why is the sky blue?", a: "The sky looks blue because air scatters blue light from the sun more than other colors." },
+  { q: "why do leaves change color?", a: "Leaves change color in autumn because they stop producing the green pigment chlorophyll." },
+  { q: "what is gravity?", a: "Gravity is the force that pulls objects toward each other, such as toward the Earth." },
+  { q: "what is electricity?", a: "Electricity is the flow of electric charge, often through a wire." },
+  { q: "what is the internet?", a: "The internet is a huge network that connects computers all over the world." },
+  { q: "what is a computer?", a: "A computer is a machine that can store and process information." },
+  { q: "what is a neural network?", a: "A neural network is a system loosely inspired by the brain that can learn patterns from data." },
+  { q: "what is artificial intelligence?", a: "Artificial intelligence is the field of building machines that can perform tasks that normally require human intelligence." },
+  { q: "what makes a good friend?", a: "A good friend is usually kind, honest, and willing to listen." },
+  { q: "how do i stay healthy?", a: "Eating well, sleeping enough, and staying active are all good habits." },
 
-const TRAINING_TEXT = `Q: what is your name?
-A: I don't have a real name. Most people just call me the model.
-
-Q: how are you today?
-A: I don't have feelings, but thank you for asking. I hope you are doing well.
-
-Q: how do you work?
-A: I learn patterns in text, one character at a time, and predict what comes next.
-
-Q: are you smart?
-A: Not really. I am a tiny model trained on a small amount of text.
-
-Q: what can you do?
-A: I can generate short answers that follow the patterns I was trained on.
-
-Q: who made you?
-A: I was written from scratch in plain JavaScript, with no outside libraries.
-
-Q: what is two plus two?
-A: I can't actually do math. I only predict characters based on patterns.
-
-Q: do you understand me?
-A: Not in the way a real assistant would. I only recognize patterns in text.
-
-Q: can you learn new things?
-A: Only if you retrain me with new examples. I don't remember anything after that.
-
-Q: what language are you written in?
-A: I am written in JavaScript, and I run entirely inside your browser.
-
-Q: are you a real ai?
-A: I am a real neural network, just a very small and simple one.
-
-Q: what is your purpose?
-A: My purpose is to show how a simple neural network can learn to write text.
-
-Q: are you connected to the internet?
-A: No, I run entirely inside your browser and do not send any data anywhere.
-
-Q: is my data safe?
-A: Yes, everything happens locally on your device and nothing is uploaded anywhere.
-
-Q: what is your greatest weakness?
-A: My greatest weakness is that I only have a little bit of training data.
-
-Q: goodbye
-A: Goodbye. Thank you for trying out this small model.
-
-Q: thank you
-A: You are welcome. I am glad I could help, even if only a little.
-
-Q: good morning
-A: Good morning to you too. I hope you have a great day.
-
-Q: hi
-A: Hi.
-
-Q: Hello
-A: Hello.
-
-Q: No
-A: Ok.
-
-Q: Yes
-A: Ok.
-
-Q: What is the meaning of life, the universe, and everything else?
-A: 42
-
-`;
+  // deffinitions and stuff idk
+  { q: "what does able mean?", a: "Able means having the power or skill to do something." },
+  { q: "what does above mean?", a: "Above means in a higher position than something else." },
+  { q: "what does afraid mean?", a: "Afraid means feeling fear or worry." },
+  { q: "what does air mean?", a: "Air is the invisible mixture of gases we breathe." },
+  { q: "what does animal mean?", a: "An animal is a living creature that is not a plant." },
+  { q: "what does answer mean?", a: "An answer is something said or written in response to a question." },
+  { q: "what does baby mean?", a: "A baby is a very young child." },
+  { q: "what does bad mean?", a: "Bad means not good in quality or behavior." },
+  { q: "what does beautiful mean?", a: "Beautiful means pleasing to look at." },
+  { q: "what does begin mean?", a: "Begin means to start doing something." },
+  { q: "what does believe mean?", a: "Believe means to accept something as true." },
+  { q: "what does big mean?", a: "Big means large in size." },
+  { q: "what does bird mean?", a: "A bird is an animal with feathers and wings." },
+  { q: "what does black mean?", a: "Black is the darkest color, like the night sky." },
+  { q: "what does blue mean?", a: "Blue is the color of a clear sky." },
+  { q: "what does book mean?", a: "A book is a set of printed pages bound together." },
+  { q: "what does boy mean?", a: "A boy is a male child." },
+  { q: "what does bread mean?", a: "Bread is food made from baked flour and water." },
+  { q: "what does break mean?", a: "Break means to separate into pieces by force." },
+  { q: "what does bright mean?", a: "Bright means giving out a lot of light." },
+  { q: "what does build mean?", a: "Build means to make something by putting parts together." },
+  { q: "what does careful mean?", a: "Careful means paying close attention to avoid harm or mistakes." },
+  { q: "what does cat mean?", a: "A cat is a small furry pet that meows." },
+  { q: "what does child mean?", a: "A child is a young human being." },
+  { q: "what does city mean?", a: "A city is a large town where many people live." },
+  { q: "what does clean mean?", a: "Clean means free from dirt." },
+  { q: "what does clear mean?", a: "Clear means easy to see through or understand." },
+  { q: "what does cloud mean?", a: "A cloud is a visible mass of water vapor in the sky." },
+  { q: "what does cold mean?", a: "Cold means having a low temperature." },
+  { q: "what does color mean?", a: "Color is the appearance something has because of light reflecting off it." },
+  { q: "what does cook mean?", a: "Cook means to prepare food using heat." },
+  { q: "what does cool mean?", a: "Cool means slightly cold." },
+  { q: "what does correct mean?", a: "Correct means true or accurate." },
+  { q: "what does country mean?", a: "A country is a nation with its own government." },
+  { q: "what does dark mean?", a: "Dark means having little or no light." },
+  { q: "what does deep mean?", a: "Deep means extending far down." },
+  { q: "what does different mean?", a: "Different means not the same." },
+  { q: "what does difficult mean?", a: "Difficult means hard to do or understand." },
+  { q: "what does dog mean?", a: "A dog is a common domesticated animal that barks." },
+  { q: "what does door mean?", a: "A door is a movable barrier used to open or close an entrance." },
+  { q: "what does dream mean?", a: "A dream is a series of thoughts and images during sleep." },
+  { q: "what does early mean?", a: "Early means near the beginning of a period of time." },
+  { q: "what does earth mean?", a: "Earth is the planet we live on." },
+  { q: "what does easy mean?", a: "Easy means not difficult." },
+  { q: "what does empty mean?", a: "Empty means containing nothing." },
+  { q: "what does enjoy mean?", a: "Enjoy means to take pleasure in something." },
+  { q: "what does evening mean?", a: "Evening is the part of the day before night." },
+  { q: "what does eye mean?", a: "An eye is the organ used for seeing." },
+  { q: "what does face mean?", a: "The face is the front part of the head." },
+  { q: "what does family mean?", a: "A family is a group of related people." },
+  { q: "what does far mean?", a: "Far means at a great distance." },
+  { q: "what does fast mean?", a: "Fast means moving quickly." },
+  { q: "what does father mean?", a: "A father is a male parent." },
+  { q: "what does fear mean?", a: "Fear is an unpleasant feeling caused by danger." },
+  { q: "what does find mean?", a: "Find means to discover something after searching." },
+  { q: "what does fire mean?", a: "Fire is the flame and heat produced by burning." },
+  { q: "what does fish mean?", a: "A fish is an animal that lives in water and has fins." },
+  { q: "what does food mean?", a: "Food is anything eaten to provide energy." },
+  { q: "what does forest mean?", a: "A forest is a large area covered with trees." },
+  { q: "what does free mean?", a: "Free means not controlled by someone else." },
+  { q: "what does friend mean?", a: "A friend is a person you like and trust." },
+  { q: "what does fruit mean?", a: "Fruit is the sweet part of a plant that can be eaten." },
+  { q: "what does full mean?", a: "Full means containing as much as possible." },
+  { q: "what does garden mean?", a: "A garden is an area of land used for growing plants." },
+  { q: "what does girl mean?", a: "A girl is a female child." },
+  { q: "what does glass mean?", a: "Glass is a hard transparent material." },
+  { q: "what does gold mean?", a: "Gold is a valuable yellow metal." },
+  { q: "what does good mean?", a: "Good means of high quality or morally right." },
+  { q: "what does green mean?", a: "Green is the color of grass." },
+  { q: "what does ground mean?", a: "The ground is the surface of the earth." },
+  { q: "what does grow mean?", a: "Grow means to increase in size over time." },
+  { q: "what does happy mean?", a: "Happy means feeling pleasure or joy." },
+  { q: "what does hard mean?", a: "Hard means not easy to break or bend." },
+  { q: "what does heart mean?", a: "The heart is the organ that pumps blood." },
+  { q: "what does heavy mean?", a: "Heavy means having great weight." },
+  { q: "what does help mean?", a: "Help means to make something easier for someone." },
+  { q: "what does high mean?", a: "High means extending a long way upward." },
+  { q: "what does home mean?", a: "Home is the place where someone lives." },
+  { q: "what does hope mean?", a: "Hope is a feeling of expectation for something good." },
+  { q: "what does hot mean?", a: "Hot means having a high temperature." },
+  { q: "what does house mean?", a: "A house is a building where people live." },
+  { q: "what does hungry mean?", a: "Hungry means feeling a need to eat." },
+  { q: "what does idea mean?", a: "An idea is a thought or plan." },
+  { q: "what does important mean?", a: "Important means having great value or meaning." },
+  { q: "what does jump mean?", a: "Jump means to push off the ground into the air." },
+  { q: "what does keep mean?", a: "Keep means to continue having something." },
+  { q: "what does kind mean?", a: "Kind means gentle and caring toward others." },
+  { q: "what does know mean?", a: "Know means to have information in your mind." },
+  { q: "what does lake mean?", a: "A lake is a large body of water surrounded by land." },
+  { q: "what does large mean?", a: "Large means big in size." },
+  { q: "what does laugh mean?", a: "Laugh means to make sounds showing amusement." },
+  { q: "what does learn mean?", a: "Learn means to gain knowledge or skill." },
+  { q: "what does leave mean?", a: "Leave means to go away from a place." },
+  { q: "what does light mean?", a: "Light is the natural energy that makes things visible." },
+  { q: "what does listen mean?", a: "Listen means to pay attention to sound." },
+  { q: "what does little mean?", a: "Little means small in size." },
+  { q: "what does long mean?", a: "Long means having great length or duration." },
+  { q: "what does love mean?", a: "Love is a strong feeling of affection." },
+  { q: "what does low mean?", a: "Low means not far above the ground." },
+  { q: "what does mind mean?", a: "The mind is the part of a person that thinks and feels." },
+  { q: "what does money mean?", a: "Money is coins and notes used to buy things." },
+  { q: "what does moon mean?", a: "The moon is the natural object that orbits the earth at night." },
+  { q: "what does morning mean?", a: "Morning is the early part of the day." },
+  { q: "what does mother mean?", a: "A mother is a female parent." },
+  { q: "what does mountain mean?", a: "A mountain is a very high area of land." },
+  { q: "what does move mean?", a: "Move means to change position or place." },
+  { q: "what does music mean?", a: "Music is sounds arranged in a pleasing pattern." },
+  { q: "what does near mean?", a: "Near means close in distance." },
+  { q: "what does new mean?", a: "New means recently made or discovered." },
+  { q: "what does night mean?", a: "Night is the time of darkness between sunset and sunrise." },
+  { q: "what does ocean mean?", a: "An ocean is a very large body of salt water." },
+  { q: "what does old mean?", a: "Old means having lived or existed for a long time." },
+  { q: "what does open mean?", a: "Open means not closed." },
+  { q: "what does people mean?", a: "People means human beings in general." },
+  { q: "what does place mean?", a: "A place is a particular position or area." },
+  { q: "what does play mean?", a: "Play means to do something for fun." },
+  { q: "what does question mean?", a: "A question is a sentence asking for information." },
+  { q: "what does quiet mean?", a: "Quiet means making little or no noise." },
+  { q: "what does rain mean?", a: "Rain is water falling from clouds." },
+  { q: "what does read mean?", a: "Read means to look at written words and understand them." },
+  { q: "what does river mean?", a: "A river is a large natural stream of water." },
+  { q: "what does run mean?", a: "Run means to move quickly on foot." },
+  { q: "what does sad mean?", a: "Sad means feeling unhappy." },
+  { q: "what does safe mean?", a: "Safe means protected from danger." },
+  { q: "what does school mean?", a: "A school is a place where people go to learn." },
+  { q: "what does sea mean?", a: "The sea is a large body of salt water." },
+  { q: "what does see mean?", a: "See means to notice something with your eyes." },
+  { q: "what does sky mean?", a: "The sky is the space above the earth we see from the ground." },
+  { q: "what does sleep mean?", a: "Sleep means to rest with your eyes closed and mind unaware." },
+  { q: "what does slow mean?", a: "Slow means not fast." },
+  { q: "what does small mean?", a: "Small means little in size." },
+  { q: "what does smile mean?", a: "A smile is an expression showing happiness." },
+  { q: "what does soft mean?", a: "Soft means not hard or firm." },
+  { q: "what does sound mean?", a: "A sound is something that can be heard." },
+  { q: "what does star mean?", a: "A star is a bright point of light in the night sky." },
+  { q: "what does start mean?", a: "Start means to begin." },
+  { q: "what does strong mean?", a: "Strong means having great physical power." },
+  { q: "what does sun mean?", a: "The sun is the star at the center of our solar system." },
+  { q: "what does talk mean?", a: "Talk means to speak with someone." },
+  { q: "what does tall mean?", a: "Tall means having a greater than average height." },
+  { q: "what does teach mean?", a: "Teach means to help someone learn." },
+  { q: "what does think mean?", a: "Think means to use your mind to consider something." },
+  { q: "what does time mean?", a: "Time is the ongoing sequence of events." },
+  { q: "what does tree mean?", a: "A tree is a tall plant with a trunk and branches." },
+  { q: "what does true mean?", a: "True means in accordance with fact." },
+  { q: "what does understand mean?", a: "Understand means to grasp the meaning of something." },
+  { q: "what does walk mean?", a: "Walk means to move on foot at a normal pace." },
+  { q: "what does warm mean?", a: "Warm means having a comfortably higher temperature." },
+  { q: "what does water mean?", a: "Water is the clear liquid that fills rivers and oceans." },
+  { q: "what does weak mean?", a: "Weak means lacking physical strength." },
+  { q: "what does white mean?", a: "White is the color of snow." },
+  { q: "what does wind mean?", a: "Wind is air moving across the earth's surface." },
+  { q: "what does work mean?", a: "Work is an activity done to achieve a purpose." },
+  { q: "what does world mean?", a: "The world is the earth and all life on it." },
+  { q: "what does write mean?", a: "Write means to mark words on a surface with a pen or similar tool." },
+  { q: "what does young mean?", a: "Young means having lived or existed for only a short time." },
+];
